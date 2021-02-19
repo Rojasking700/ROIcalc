@@ -3,8 +3,8 @@
 class Income():
 
     def __init__(self, rentalI, extraI= 0): #takes in all the variables you will need to calcuate income
-        self.rentalI = rentalI
-        self.extraI = extraI
+        self.rentalI = int(rentalI)
+        self.extraI = int(extraI)
 
     def calcIncome(self): #claculates the total income of the property
         self.income = self.rentalI + self.extraI
@@ -13,16 +13,16 @@ class Income():
 class Expenses():
 
     def __init__(self, tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage): #takes in all the varaibles need to to calculate expenses
-        self.tax = tax
-        self.insurance = insurance
-        self.utilities = utilities
-        self.HOA = HOA
-        self.lsCare = lsCare
-        self.vacancy = vacancy
-        self.repairs = repairs
-        self.capex = capex
-        self.management = management
-        self.mortgage = mortgage
+        self.tax = int(tax)
+        self.insurance = int(insurance)
+        self.utilities = int(utilities)
+        self.HOA = int(HOA)
+        self.lsCare = int(lsCare)
+        self.vacancy = int(vacancy)
+        self.repairs = int(repairs)
+        self.capex = int(capex)
+        self.management = int(management)
+        self.mortgage = int(mortgage)
 
 
     def calcExpenses(self): #calculates total expenses
@@ -32,10 +32,10 @@ class Expenses():
 class ROI():
 
     def __init__(self,downPay,closingCost,repairBudget,misc =0): #takes in all the varaibles you will need to calculate the retrun on investment
-        self.downpay = downPay
-        self.closingCost = closingCost
-        self.repairBudget = repairBudget
-        self.misc = misc
+        self.downpay = int(downPay)
+        self.closingCost = int(closingCost)
+        self.repairBudget = int(repairBudget)
+        self.misc = int(misc)
 
     def calcCashFlow(self): #calculates cash flow
         self.cashFlow = self.income - self.expenses
@@ -51,17 +51,16 @@ class ROI():
 
     def totalROI(self): #calculates your return on investment
         self.totalROI = self.annualCash / self.totalI
-        self.totalROI *= 100
         return '{0:.2%}'.format(self.totalROI)
 
 class Proptery(Income,Expenses,ROI):
 
-    def __init__(self,address,cost,type,rentalI, extraI,tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage,downPay,closingCost,repairBudget,misc): # takes in all the information about the rental property
+    def __init__(self,address,cost,type,rentalI,extraI,tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage,downPay,closingCost,repairBudget,misc): # takes in all the information about the rental property
         Income.__init__(self, rentalI, extraI)
         Expenses.__init__(self, tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage)
         ROI.__init__(self,downPay,closingCost,repairBudget,misc)
         self.address = address
-        self.cost = cost
+        self.cost = int(cost)
         self.type = type
 
     def propInfo(self):
@@ -77,29 +76,103 @@ class Proptery(Income,Expenses,ROI):
 
 class Main(): 
 
+    def check(var): #checks if the in put is an integer
+        try:
+            if isinstance(int(var),int):
+                return False
+        except ValueError:
+            print("Invalid input please try input a integer!")
+            return True
+
     def run():
-        address = input("What is the address of the property you are trying to buy? ").strip()
-        cost = int(input("How much is the property you are trying to buy? ").strip())
+        
+        address = input("What is the address of the property you are trying to buy? ").title().strip()
         rentalType = input("What kind of property is it? (ex: apartment, duplex, house) ").strip()
+        a = True
+        while a == True:
+            cost = input("How much is the property you are trying to buy? ").strip()
+            a = Main.check(cost)
+        a = True
+            
 
-        rentalI = int(input("How much rental income will you generate? ").strip())
-        extraI = int(input("Do you have any extra income you would like to account for? ").strip())
+        while a == True:
+            rentalI = input("How much rental income will you generate? ").strip()
+            a = Main.check(rentalI)
+        a = True
+        while a == True:
+            extraI = input("Do you have any extra income you would like to account for? ").strip()
+            a = Main.check(extraI)
+        a = True
+        while a == True:
+            tax = input("How much will you be paying in propety taxes? ").strip()
+            a = Main.check(tax)
+        a = True
+        while a == True:
+            insurance = input("How much will you be paying in insurance? ").strip()
+            a = Main.check(insurance)
+        a = True
+        while a == True:
+            utilities = input("How much will you be paying for utilities? ").strip()
+            a = Main.check(utilities)
+        a = True
+        while a == True:
+            HOA = input("How much will you have to pay to the Home Oweners Association? ").strip()
+            a = Main.check(HOA)
+        a = True
+        while a == True:
+            lsCare = input("How much will you pay for in lawn care or other services? ").strip()
+            a = Main.check(lsCare)
+        a = True
+        while a == True:
+            vacancy = input("How much will you set aside for vacancy? ").strip()
+            a = Main.check(vacancy)
+        a = True
+        while a == True:
+            repairs = input("How much will you set aside for repairs? ").strip()
+            a = Main.check(repairs)
+        a = True
+        while a == True:
+            capex = input("How much will you set aside for capital expenses? ").strip()
+            a = Main.check(capex)
+        a = True
+        while a == True:
+            management = input("How much are you going to pay for property management? ").strip()
+            a = Main.check(management)
+        a = True
 
-        tax = int(input("How much will you be paying in propety taxes? ").strip())
-        insurance = int(input("How much will you be paying in insurance? ").strip())
-        utilities = int(input("How much will you be paying for utilities? ").strip())
-        HOA = int(input("How much will you have to pay to the Home Oweners Association? ").strip())
-        lsCare = int(input("How much will you pay for in lawn care or other services? ").strip())
-        vacancy = int(input("How much will you set aside for vacancy? ").strip())
-        repairs = int(input("How much will you set aside for repairs? ").strip())
-        capex = int(input("How much will you set aside for capital expenses? ").strip())
-        management = int(input("How much are you going to pay for property management? ").strip())
-        mortgage = int(input("How much will your mortgage payment be? ").strip())
+        # b = False
+        while True:
+            payInFull = input("Will you be paying in full 'yes' or 'no'? ").lower().strip()
+            if payInFull == 'no':
+                while a == True:
+                    mortgage = input("How much will your mortgage payment be? ").strip()
+                    a = Main.check(mortgage)
+                a = True
+                while a == True:
+                    downPay = input("How much will your down payment be? ").strip()
+                    a = Main.check(downPay)
+                a = True
+                # b = False
+                break
+            elif payInFull == 'yes':
+                mortgage = 0
+                downPay = cost
+                break
+            else:
+                print("Invalid input please enter 'yes' or 'no'" )
 
-        downPay = int(input("How much will your down payment be? ").strip())
-        closingCost = int(input("How much will the closing cost be? ").strip())
-        repairBudget = int(input("How much is your repiar budget? ").strip())
-        misc = int(input("Do you have miscellaneous costs you would like to account for?").strip())
+        while a == True:
+            closingCost = input("How much will the closing cost be? ").strip()
+            a = Main.check(closingCost)
+        a = True
+        while a == True:
+            repairBudget = input("How much is your repiar budget? ").strip()
+            a = Main.check(repairBudget)
+        a = True
+        while a == True:
+            misc = input("Do you have miscellaneous costs you would like to account for?").strip()
+            a = Main.check(misc)
+        a = True
 
         rental = Proptery(address,cost,rentalType,rentalI,extraI,tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage,downPay,closingCost,repairBudget,misc)
 
@@ -113,7 +186,5 @@ class Main():
 
 
 
-
 Main.run()
-
 
