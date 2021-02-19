@@ -37,8 +37,8 @@ class ROI():
         self.repairBudget = repairBudget
         self.misc = misc
 
-    def calcCashFlow(self,income, expenses): #calculates cash flow
-        self.cashFlow = income - expenses
+    def calcCashFlow(self): #calculates cash flow
+        self.cashFlow = self.income - self.expenses
         return self.cashFlow    
 
     def totalInvestment(self): #calculates the total amount of money you put into the property 
@@ -52,58 +52,60 @@ class ROI():
     def totalROI(self): #calculates your return on investment
         self.totalROI = self.annualCash / self.totalI
         self.totalROI *= 100
-        return self.totalROI
+        return '{0:.2%}'.format(self.totalROI)
 
-class Proptery():
+class Proptery(Income,Expenses,ROI):
 
-    def __init__(self,address,cost,type='Rental Property'): # takes in the intial information about the house
+    def __init__(self,address,cost,type,rentalI, extraI,tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage,downPay,closingCost,repairBudget,misc): # takes in all the information about the rental property
+        Income.__init__(self, rentalI, extraI)
+        Expenses.__init__(self, tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage)
+        ROI.__init__(self,downPay,closingCost,repairBudget,misc)
         self.address = address
         self.cost = cost
         self.type = type
 
     def propInfo(self):
-        return f"The {self.type} you are looking to buy at {self.address} costs ${self.cost}"
+        print("=======================================================")
+        print(f"The {self.type} you are looking to buy at {self.address} costs ${self.cost}")
+        print(f"Your total rental income is ${self.calcIncome()}")
+        print(f"Your total expenses are ${self.calcExpenses()}")
+        print(f"Your total cash flow is ${self.calcCashFlow()}")
+        print(f"Your total investment is ${self.totalInvestment()}")
+        print(f"Your total anual cashflow is ${self.annualCashFlow()}")
+        print(f"Your total anual ROI is {self.totalROI()}")
 
 
 class Main(): 
 
     def run():
-        address = '8948 31st ave'
-        cost = 200000
-        rentalType = 'Duplex'
-        duplex1 = Proptery(address, cost, rentalType)
-        print(duplex1.propInfo())
+        address = input("What is the address of the property you are trying to buy? ").strip()
+        cost = int(input("How much is the property you are trying to buy? ").strip())
+        rentalType = input("What kind of property is it? (ex: apartment, duplex, house) ").strip()
 
-        rentalIncome = 2000
-        extraIncome = 0
-        duplex2 = Income(rentalIncome, extraIncome)
-        print(f"Your total rental income is ${duplex2.calcIncome()}")
+        rentalI = int(input("How much rental income will you generate? ").strip())
+        extraI = int(input("Do you have any extra income you would like to account for? ").strip())
 
-        tax = 150
-        insurance = 100
-        utilities = 0
-        HOA = 0
-        lsCare = 0
-        vacancy = 100 
-        repairs = 100
-        capex = 100
-        management = 200
-        mortgage = 860
-        duplex3= Expenses(tax,insurance,utilities, HOA, lsCare, vacancy,repairs,capex,management,mortgage)
-        print(f"Your total expenses are ${duplex3.calcExpenses()}")
+        tax = int(input("How much will you be paying in propety taxes? ").strip())
+        insurance = int(input("How much will you be paying in insurance? ").strip())
+        utilities = int(input("How much will you be paying for utilities? ").strip())
+        HOA = int(input("How much will you have to pay to the Home Oweners Association? ").strip())
+        lsCare = int(input("How much will you pay for in lawn care or other services? ").strip())
+        vacancy = int(input("How much will you set aside for vacancy? ").strip())
+        repairs = int(input("How much will you set aside for repairs? ").strip())
+        capex = int(input("How much will you set aside for capital expenses? ").strip())
+        management = int(input("How much are you going to pay for property management? ").strip())
+        mortgage = int(input("How much will your mortgage payment be? ").strip())
+
+        downPay = int(input("How much will your down payment be? ").strip())
+        closingCost = int(input("How much will the closing cost be? ").strip())
+        repairBudget = int(input("How much is your repiar budget? ").strip())
+        misc = int(input("Do you have miscellaneous costs you would like to account for?").strip())
+
+        rental = Proptery(address,cost,rentalType,rentalI,extraI,tax,insurance,utilities,HOA,lsCare,vacancy,repairs,capex,management,mortgage,downPay,closingCost,repairBudget,misc)
 
         
-
-        downPay = 40000
-        closingCost = 3000
-        repairBudget = 7000
-        misc = 0
-        duplex4 = ROI(downPay, closingCost,repairBudget,misc)
-        print(f"Your total cash flow is ${duplex4.calcCashFlow( duplex2.calcIncome(), duplex3.calcExpenses() )}")
-        print(f"Your total investment is ${duplex4.totalInvestment()}")
-        print(f"Your total anual cashflow is ${duplex4.annualCashFlow()}")
-        print(f"Your total anual ROI is {duplex4.totalROI()}%")
-
+        rental.propInfo()
+        
 
 
 
